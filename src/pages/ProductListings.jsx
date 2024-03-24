@@ -56,18 +56,18 @@ const ProductListings = () => {
       {
       isOpen &&
       <Modal handleClose={() => setIsOpen(false)} isOpen={isOpen}>
-        <div className="flex items-center w-full h-full">
-          <div className="w-[50%] h-full bg-yellow-50 overflow-hidden">
+        <div className="flex flex-col sm:flex-row items-center w-full h-full">
+          <div className="w-[100%] sm:w-[50%] h-full bg-yellow-50 overflow-hidden">
             <ModelViewer texture={selectedTexture.image} modelLocation = {selectedModel} materialPty = {selectedProperty}/>
           </div>
-          <div className="w-[50%] h-full">
-            <div className="h-[60%]"></div>
-            <div className="h-[40%] p-4">
-              <h1 className="text-xl font-bold">Select Textures</h1>
-              <div className="w-full h-full flex gap-3 items-center justify-center ">
+          <div className="w-[100%] flex flex-col justify-between sm:w-[50%] h-full p-4">
+            {/* <div className="h-[100%]"></div> */}
+            <div className="p-4">
+              <h1 className="text-xl font-semibold italic font-mono">Select Textures</h1>
+              <div className="w-full h-full flex gap-3 items-center justify-center flex-wrap ">
                 {texturesObj.map((item, index) => (
                   <div
-                    className="h-[4rem] w-[4rem] overflow-hidden rounded-full cursor-pointer"
+                    className="h-[40px] w-[40px] overflow-hidden rounded-full cursor-pointer"
                     key={index}
                     onClick={() => setSelectedTexture(item)}
                   >
@@ -88,8 +88,8 @@ const ProductListings = () => {
         </div>
       </Modal>
       }
-      <div className="h-full mx-auto p-[4rem]">
-        <div className="grid grid-cols-3 gap-8">
+      <div className="h-full mx-auto px-[1rem] sm:p-[4rem] p-[4rem]">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 grid-cols-1 gap-8">
           {clothingProducts.map((item) => (
             <div
               key={item.id}
