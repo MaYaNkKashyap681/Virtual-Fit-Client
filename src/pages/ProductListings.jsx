@@ -53,6 +53,8 @@ const ProductListings = () => {
 
   return (
     <div className="">
+      {
+      isOpen &&
       <Modal handleClose={() => setIsOpen(false)} isOpen={isOpen}>
         <div className="flex items-center w-full h-full">
           <div className="w-[50%] h-full bg-yellow-50 overflow-hidden">
@@ -85,6 +87,7 @@ const ProductListings = () => {
           </div>
         </div>
       </Modal>
+      }
       <div className="h-full mx-auto p-[4rem]">
         <div className="grid grid-cols-3 gap-8">
           {clothingProducts.map((item) => (
