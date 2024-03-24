@@ -57,10 +57,10 @@ const ProductListings = () => {
       isOpen &&
       <Modal handleClose={() => setIsOpen(false)} isOpen={isOpen}>
         <div className="flex flex-col sm:flex-row items-center w-full h-full">
-          <div className="w-[100%] sm:w-[50%] h-full bg-yellow-50 overflow-hidden">
+          <div className="w-[100%] sm:w-[50%] min-h-48 sm:h-full bg-yellow-50 overflow-hidden">
             <ModelViewer texture={selectedTexture.image} modelLocation = {selectedModel} materialPty = {selectedProperty}/>
           </div>
-          <div className="w-[100%] flex flex-col justify-between sm:w-[50%] h-full p-4">
+          <div className="w-[100%] flex flex-col justify-between sm:w-[50%] h-full p-4 overflow-scroll">
             {/* <div className="h-[100%]"></div> */}
             <div className="p-4">
               <h1 className="text-xl font-semibold italic font-mono">Select Textures</h1>
