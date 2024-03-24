@@ -1,14 +1,14 @@
 import React from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Environment, Center } from '@react-three/drei';
-import Shirt from './Shirt';
+import ModelLoader from './ModelLoader';
 import { OrbitControls } from '@react-three/drei'
 
-const ModelViewer = ({texture}) => {
+const ModelViewer = ({texture, modelLocation, materialPty}) => {
   return (
     <Canvas
       shadows
-      camera={{ position: [0, 0, 3], fov: 20 }}
+      camera={{ position: [0, 0, 3], fov: 50 }}
       gl={{ preserveDrawingBuffer: true }}
       className="w-full max-w-full h-full"
     >
@@ -22,7 +22,7 @@ const ModelViewer = ({texture}) => {
       <ambientLight intensity={0.5}/>
       <Environment preset="city" />
       <Center>
-        <Shirt texture = {texture}/>
+        <ModelLoader texture = {texture} modelLocation = {modelLocation} materialPty={materialPty}/>
       </Center>
     </Canvas>
   );

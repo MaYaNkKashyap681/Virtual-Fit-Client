@@ -37,16 +37,26 @@ const texturesObj = [
   },
 ];
 
+
 const ProductListings = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTexture, setSelectedTexture] = useState(texturesObj[0]);
+  const [selectedModel, setSelectedModel] = useState(clothingProducts[0].model);
+  const [selectedProperty, setSelectedProperty] = useState(clothingProducts[0].materialPty);
+
+
+  const handleClick = (modelLocation, materialPty) => {
+      setIsOpen(true);
+      setSelectedModel(modelLocation);
+      setSelectedProperty(materialPty);
+  }
 
   return (
-    <main>
+    <div className="">
       <Modal handleClose={() => setIsOpen(false)} isOpen={isOpen}>
         <div className="flex items-center w-full h-full">
           <div className="w-[50%] h-full bg-yellow-50 overflow-hidden">
-            <ModelViewer texture={selectedTexture.image} />
+            <ModelViewer texture={selectedTexture.image} modelLocation = {selectedModel} materialPty = {selectedProperty}/>
           </div>
           <div className="w-[50%] h-full">
             <div className="h-[60%]"></div>
@@ -102,7 +112,7 @@ const ProductListings = () => {
                   </button>
                   <button
                     className="bg-black text-white w-full py-2 rounded-md hover:opacity-70"
-                    onClick={() => setIsOpen(true)}
+                    onClick={() => handleClick(item.model, item.materialPty)}
                   >
                     View 3D
                   </button>
@@ -112,7 +122,7 @@ const ProductListings = () => {
           ))}
         </div>
       </div>
-    </main>
+    </div>
   );
 };
 
