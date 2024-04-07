@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { clothingProducts } from "../data/productList";
 import ModelViewer from "../components/ModelViewer";
 import Modal from "../components/Modal";
+import { Link } from "react-router-dom";
 
 import texture from "./../assets/texture.jpeg";
 import txt1 from "./../assets/txt1.jpg";
@@ -109,8 +110,12 @@ const ProductListings = () => {
                 </div>
 
                 <div className="flex flex-col w-full mt-[1rem]">
-                  <button className="bg-yellow-500 text-white">Try On Cloth</button>
-                  <button className="bg-pink-500 text-white">Try on 3D Model</button>
+                  <button className="bg-yellow-500 text-white">
+                    <Link to="/tryon">Try On Cloth</Link>
+                  </button>
+                  <button className="bg-pink-500 text-white">
+                    Try on 3D Model
+                  </button>
                 </div>
               </div>
             </div>
@@ -139,16 +144,13 @@ const ProductListings = () => {
                   </p>
                 </div>
                 <div className="mt-4 flex justify-between gap-4">
-                  <button className="bg-green-200 text-black w-full py-2 rounded-md">
-                    Visit
-                  </button>
                   <button
                     className="bg-black text-white w-full py-2 rounded-md hover:opacity-70"
                     onClick={() =>
                       handleClick(item.model, item.materialPty, item)
                     }
                   >
-                    View 3D
+                    View
                   </button>
                 </div>
               </div>
