@@ -3,6 +3,7 @@ import Webcam from "react-webcam";
 import * as poseDetection from "@tensorflow-models/pose-detection";
 import * as tf from "@tensorflow/tfjs-core";
 import "@tensorflow/tfjs-backend-webgl";
+import human from './../assets/human.png';
 
 const detectorConfig = {
   architecture: "MobileNetV1",
@@ -140,6 +141,7 @@ const DemoComp2 = () => {
               playsInline
               style={{ width: "640px", height: "480px" }} // Adjust webcam style
             />
+            <img src = {human} alt = "" className="absolute h-full w-full object-contain opacity-50"/>
             <canvas
               ref={canvasRef}
               className="absolute top-0 left-0 z-[1] transparent"
