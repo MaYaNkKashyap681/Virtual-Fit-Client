@@ -37,57 +37,86 @@ const texturesObj = [
   },
 ];
 
-
 const ProductListings = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTexture, setSelectedTexture] = useState(texturesObj[0]);
   const [selectedModel, setSelectedModel] = useState(clothingProducts[0].model);
-  const [selectedProperty, setSelectedProperty] = useState(clothingProducts[0].materialPty);
+  const [selectedProperty, setSelectedProperty] = useState(
+    clothingProducts[0].materialPty
+  );
+  const [productSelected, setProductSelected] = useState(clothingProducts[0]);
 
-
-  const handleClick = (modelLocation, materialPty) => {
-      setIsOpen(true);
-      setSelectedModel(modelLocation);
-      setSelectedProperty(materialPty);
-  }
+  const handleClick = (modelLocation, materialPty, product) => {
+    setIsOpen(true);
+    setSelectedModel(modelLocation);
+    setSelectedProperty(materialPty);
+    setProductSelected(product);
+  };
 
   return (
     <div className="">
-      {
-      isOpen &&
-      <Modal handleClose={() => setIsOpen(false)} isOpen={isOpen}>
-        <div className="flex flex-col sm:flex-row items-center w-full h-full">
-          <div className="w-[100%] sm:w-[50%] min-h-48 sm:h-full bg-yellow-50 overflow-hidden">
-            <ModelViewer texture={selectedTexture.image} modelLocation = {selectedModel} materialPty = {selectedProperty}/>
-          </div>
-          <div className="w-[100%] flex flex-col justify-between sm:w-[50%] h-full p-4 overflow-scroll">
-            {/* <div className="h-[100%]"></div> */}
-            <div className="p-4">
-              <h1 className="text-xl font-semibold italic font-mono">Select Textures</h1>
-              <div className="w-full h-full flex gap-3 items-center justify-center flex-wrap ">
-                {texturesObj.map((item, index) => (
-                  <div
-                    className="h-[40px] w-[40px] overflow-hidden rounded-full cursor-pointer"
-                    key={index}
-                    onClick={() => setSelectedTexture(item)}
-                  >
-                    <img
-                      src={item.image}
-                      alt="texture image"
-                      className={`h-full w-full object-cover border-[6px] ${
-                        selectedTexture.name === item.name
-                          ? "border-gray-800"
-                          : ""
-                      } overflow-hidden rounded-full`}
-                    />
+      {isOpen && (
+        <Modal handleClose={() => setIsOpen(false)} isOpen={isOpen}>
+          <div className="flex flex-col sm:flex-row items-center w-full h-full">
+            <div className="w-[100%] sm:w-[50%] min-h-48 sm:h-full bg-yellow-50 overflow-hidden">
+              <ModelViewer
+                texture={selectedTexture.image}
+                modelLocation={selectedModel}
+                materialPty={selectedProperty}
+              />
+            </div>
+            <div className="w-[100%] flex flex-col justify-between sm:w-[50%] h-full p-4 overflow-scroll">
+              {/* <div className="h-[100%]"></div> */}
+              <div className="p-4">
+                <div className="w-full flex gap-3 items-center justify-center flex-wrap flex-col">
+                  <h1 className="text-xl font-semibold italic font-mono">
+                    Select Textures
+                  </h1>
+                  <div className="flex gap-2">
+                    {texturesObj.map((item, index) => (
+                      <div
+                        className="h-[40px] w-[40px] overflow-hidden rounded-full cursor-pointer"
+                        key={index}
+                        onClick={() => setSelectedTexture(item)}
+                      >
+                        <img
+                          src={item.image}
+                          alt="texture image"
+                          className={`h-full w-full object-cover border-[6px] ${
+                            selectedTexture.name === item.name
+                              ? "border-gray-800"
+                              : ""
+                          } overflow-hidden rounded-full`}
+                        />
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
+                <div className="flex flex-col gap-4 mt-[4rem]">
+                  <h2 className="text-xl font-semibold">
+                    {productSelected.name}
+                  </h2>
+                  <p className="text-lg font-light">
+                    {productSelected.description}
+                  </p>
+
+                  <div className="bg-blue-400 w-fit px-4 rounded-lg text-white">
+                    {productSelected.category}
+                  </div>
+                  <div className="font-bold text-2xl">
+                    ${productSelected.price}
+                  </div>
+                </div>
+
+                <div className="flex flex-col w-full mt-[1rem]">
+                  <button className="bg-yellow-500 text-white">Try On Cloth</button>
+                  <button className="bg-pink-500 text-white">Try on 3D Model</button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </Modal>
-      }
+        </Modal>
+      )}
       <div className="h-full mx-auto px-[1rem] sm:p-[4rem] p-[4rem]">
         <div className="grid sm:grid-cols-2 md:grid-cols-3 grid-cols-1 gap-8">
           {clothingProducts.map((item) => (
@@ -115,7 +144,9 @@ const ProductListings = () => {
                   </button>
                   <button
                     className="bg-black text-white w-full py-2 rounded-md hover:opacity-70"
-                    onClick={() => handleClick(item.model, item.materialPty)}
+                    onClick={() =>
+                      handleClick(item.model, item.materialPty, item)
+                    }
                   >
                     View 3D
                   </button>
