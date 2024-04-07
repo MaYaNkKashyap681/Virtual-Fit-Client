@@ -18,6 +18,12 @@ const DemoComp2 = () => {
   const [model, setModel] = useState(null);
 
   const [startDetector, setStartDetector] = useState(false);
+  const [bodyPartLengths, setBodyPartLengths] = useState({
+    shoulderLength: 0,
+    waistLength: 0,
+    handLength: 0,
+    legsLength: 0,
+  });
 
 
   const loadModel = async () => {
@@ -61,7 +67,35 @@ const DemoComp2 = () => {
 
         // Make Detections
         const poses = await model.estimatePoses(video);
-        drawPosesOnCanvas(poses[0]);
+        const pose = poses[0];
+
+        const scale_factor = 2.4
+        const lengths = {
+          shoulderLength: calculateLength(pose.keypoints.find((kp) => kp.name === 'left_shoulder'), pose.keypoints.find((kp) => kp.name === 'right_shoulder')) / scale_factor,
+          waistLength: calculateLength(pose.keypoints.find((kp) => kp.name === 'left_hip'), pose.keypoints.find((kp) => kp.name === 'right_hip')) / scale_factor, 
+          handLength: Math.min(
+            calculateLength(
+              pose.keypoints.find((kp) => kp.name === 'left_shoulder'),
+              pose.keypoints.find((kp) => kp.name === 'left_wrist')
+            ),
+            calculateLength(
+              pose.keypoints.find((kp) => kp.name === 'right_shoulder'),
+              pose.keypoints.find((kp) => kp.name === 'right_wrist')
+            )
+          ) / 2.4,
+          legsLength: Math.min(
+            calculateLength(
+              pose.keypoints.find((kp) => kp.name === 'left_hip'),
+              pose.keypoints.find((kp) => kp.name === 'left_ankle')
+            ),
+            calculateLength(
+              pose.keypoints.find((kp) => kp.name === 'right_hip'),
+              pose.keypoints.find((kp) => kp.name === 'right_ankle')
+            )
+          ) / 2.4,
+        };
+        setBodyPartLengths(lengths);
+        drawPosesOnCanvas(pose);
       }
     };
     const intervalId = setInterval(detectPose, 120);
@@ -125,6 +159,11 @@ const DemoComp2 = () => {
     }
   };
 
+  const calculateLength = (partA, partB) => {
+    return Math.sqrt(Math.pow(partB.x - partA.x, 2) + Math.pow(partB.y - partA.y, 2));
+  };
+
+
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="relative w-[640px] h-[480px] flex items-center justify-center border-[8px] mt-[2rem]">
@@ -152,12 +191,11 @@ const DemoComp2 = () => {
           </>
         )}
       </div>
-
       <div className="mt-[1rem]">
-          <h1>Shoulder Length: </h1>
-          <h1>Waist Length: </h1>
-          <h1>Hand Length: </h1>
-          <h1>Legs Length: </h1>
+        <h1>Shoulder Length: {bodyPartLengths.shoulderLength.toFixed(2)} cm</h1>
+        <h1>Waist Length: {bodyPartLengths.waistLength.toFixed(2)} cm</h1>
+        <h1>Hand Length: {bodyPartLengths.handLength.toFixed(2)} cm</h1>
+        <h1>Legs Length: {bodyPartLengths.legsLength.toFixed(2)} cm</h1>
       </div>
     </div>
   );
