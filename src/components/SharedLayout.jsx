@@ -2,12 +2,16 @@ import React, { useState, useEffect } from "react";
 import { Outlet } from "react-router";
 import Navbar from "./Navbar";
 
-const SharedLayout = () => {
+const SharedLayout = ({ connectHandler, provider, account }) => {
   return (
     <div className="">
-      <Navbar />
+      <Navbar
+        connectHandler={connectHandler}
+        provider={provider}
+        account={account}
+      />
       <div className="">
-        <Outlet/>
+        <Outlet />
       </div>
     </div>
   );

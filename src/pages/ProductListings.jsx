@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { clothingProducts } from "../data/productList";
 import ModelViewer from "../components/ModelViewer";
 import Modal from "../components/Modal";
 import { Link } from "react-router-dom";
-
+import { ethers } from "ethers";
 import texture from "./../assets/texture.jpeg";
 import txt1 from "./../assets/txt1.jpg";
 import txt2 from "./../assets/txt2.jpg";
@@ -38,22 +38,36 @@ const texturesObj = [
   },
 ];
 
-const ProductListings = () => {
+const ProductListings = ({
+  provider,
+  virtualTryOn,
+  itemList,
+  buyHandler,
+  fetchDataHandler,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTexture, setSelectedTexture] = useState(texturesObj[0]);
-  const [selectedModel, setSelectedModel] = useState(clothingProducts[0].model);
+  const [selectedModel, setSelectedModel] = useState(itemList[0].model);
   const [selectedProperty, setSelectedProperty] = useState(
-    clothingProducts[0].materialPty
+    itemList[0].materialPty
   );
-  const [productSelected, setProductSelected] = useState(clothingProducts[0]);
-
+  const [productSelected, setProductSelected] = useState(itemList[0]);
+  const [productBought, setProductBought] = useState(false);
   const handleClick = (modelLocation, materialPty, product) => {
     setIsOpen(true);
     setSelectedModel(modelLocation);
     setSelectedProperty(materialPty);
     setProductSelected(product);
   };
+  const callBuyHandler = async (item) => {
+    await buyHandler(item);
+    setProductBought(true);
+    setTimeout(() => {
+      setProductBought(false);
+    }, 5000);
+  };
 
+  console.log(itemList);
   return (
     <div className="">
       {isOpen && (
@@ -70,6 +84,11 @@ const ProductListings = () => {
               {/* <div className="h-[100%]"></div> */}
               <div className="p-4">
                 <div className="w-full flex gap-3 items-center justify-center flex-wrap flex-col">
+                  {productBought && (
+                    <div className="bg-green-300 p-2 rounded-lg">
+                      You Bought the item
+                    </div>
+                  )}
                   <h1 className="text-xl font-semibold italic font-mono">
                     Select Textures
                   </h1>
@@ -116,6 +135,12 @@ const ProductListings = () => {
                   <button className="bg-pink-500 text-white">
                     Try on 3D Model
                   </button>
+                  <button
+                    className="bg-cyan-500 text-white"
+                    onClick={() => callBuyHandler(productSelected)}
+                  >
+                    Buy Now
+                  </button>
                 </div>
               </div>
             </div>
@@ -124,7 +149,7 @@ const ProductListings = () => {
       )}
       <div className="h-full mx-auto px-[1rem] sm:p-[4rem] p-[4rem]">
         <div className="grid sm:grid-cols-2 md:grid-cols-3 grid-cols-1 gap-8">
-          {clothingProducts.map((item) => (
+          {itemList.map((item) => (
             <div
               key={item.id}
               className="flex mx-auto flex-col w-full max-w-sm rounded-xl overflow-hidden border hover:border-blue-400 transition-all duration-200 cursor-pointer"
